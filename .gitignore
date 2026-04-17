@@ -1,0 +1,29 @@
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Dependencias
+node_modules/
+
+# Build
+dist/
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Archivos internos de contexto de desarrollo
+AGENTS.md
+ARCHITECTURE.md
+CODE_STYLE.md
+Git Flow – Guía de Trabajo 2026.md
+MOCKS_SPEC.md
+PruebaTecnica_Frontend_Colfact.md
+SECURITY.md
+SETUP.md
