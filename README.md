@@ -1,6 +1,6 @@
 # Colfact Portal
 
-Segunda etapa del portal administrativo de Colfact con autenticación reactiva y rutas protegidas.
+Tercera etapa del portal administrativo de Colfact con autenticación reactiva y módulo de usuarios funcional.
 
 ## Stack
 
@@ -12,6 +12,16 @@ Segunda etapa del portal administrativo de Colfact con autenticación reactiva y
 - Axios
 - React Hook Form + Zod
 - MSW
+- React Router v6 con rutas protegidas
+
+## Módulos
+
+- Login con validación y sesión reactiva
+- Lista paginada de usuarios
+- Filtros por rol y estado
+- Búsqueda por nombre, identificación y username
+- Creación inline de usuarios
+- Detalle dedicado en `/users/:id`
 
 ## Scripts
 
