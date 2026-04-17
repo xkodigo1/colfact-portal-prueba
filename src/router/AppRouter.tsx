@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { AppLayout } from '@/components/layout/AppLayout';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { UserDetailPage } from '@/pages/UserDetailPage';
@@ -11,12 +12,14 @@ export const AppRouter = () => {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route element={<ProtectedRoute />}>
-        <Route index element={<Navigate replace to="/dashboard" />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/users/:id" element={<UserDetailPage />} />
+        <Route element={<AppLayout />}>
+          <Route index element={<Navigate replace to="/dashboard" />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/users" element={<UsersPage />} />
+          <Route path="/users/:id" element={<UserDetailPage />} />
+        </Route>
       </Route>
-      <Route path="*" element={<Navigate replace to="/login" />} />
+      <Route path="*" element={<Navigate replace to="/" />} />
     </Routes>
   );
 };
