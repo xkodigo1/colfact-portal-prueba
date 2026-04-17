@@ -1,16 +1,34 @@
-import { Card } from '@/components/ui/Card';
+import { Navigate } from 'react-router-dom';
+
+import { LoginForm } from '@/features/auth/components/LoginForm';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 
 export const LoginPage = () => {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate replace to="/dashboard" />;
+  }
+
   return (
-    <main className="flex min-h-screen items-center justify-center px-4 py-12">
-      <Card className="max-w-lg">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary-600">Colfact</p>
-        <h1 className="mt-4 text-3xl font-bold text-surface-900">Foundation del portal</h1>
-        <p className="mt-3 text-sm leading-7 text-surface-700">
-          Esta primera etapa deja listo el stack, la estructura del proyecto y los componentes base para
-          construir autenticación y usuarios.
-        </p>
-      </Card>
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(20,184,166,0.16),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(29,111,216,0.16),_transparent_35%)]" />
+      <div className="relative flex w-full max-w-6xl flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
+        <section className="max-w-xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary-600">
+            CONEXUSIT SAS · Facturación electrónica
+          </p>
+          <h2 className="mt-6 text-4xl font-bold tracking-tight text-surface-900 md:text-5xl">
+            Controla emisores, usuarios y trazabilidad documental desde un solo portal.
+          </h2>
+          <p className="mt-5 text-base leading-7 text-surface-700">
+            Esta segunda etapa incorpora autenticación reactiva, rutas protegidas y sincronización de sesión para
+            preparar la administración del portal.
+          </p>
+        </section>
+
+        <LoginForm />
+      </div>
     </main>
   );
 };

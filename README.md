@@ -1,6 +1,6 @@
 # Colfact Portal
 
-Base inicial del portal administrativo de Colfact construida con React, TypeScript y Vite.
+Segunda etapa del portal administrativo de Colfact con autenticación reactiva y rutas protegidas.
 
 ## Stack
 
@@ -10,6 +10,8 @@ Base inicial del portal administrativo de Colfact construida con React, TypeScri
 - Tailwind CSS
 - TanStack Query
 - Axios
+- React Hook Form + Zod
+- MSW
 
 ## Scripts
 
