@@ -8,7 +8,7 @@ let users = [...MOCK_USERS];
 let nextId = users.length + 1;
 
 export const usersHandlers = [
-  http.get('/api/users', ({ request }) => {
+  http.get('*/api/users', ({ request }) => {
     const url = new URL(request.url);
     const search = url.searchParams.get('search')?.toLowerCase() ?? '';
     const role = url.searchParams.get('role') as UserRole | null;
@@ -38,7 +38,7 @@ export const usersHandlers = [
       pageSize,
     });
   }),
-  http.get('/api/users/:id', ({ params }) => {
+  http.get('*/api/users/:id', ({ params }) => {
     const userId = Number(params.id);
     const user = users.find((item) => item.id === userId);
 
@@ -48,7 +48,7 @@ export const usersHandlers = [
 
     return HttpResponse.json(user);
   }),
-  http.post('/api/users', async ({ request }) => {
+  http.post('*/api/users', async ({ request }) => {
     const body = (await request.json()) as Omit<User, 'id'>;
 
     if (users.some((user) => user.userName === body.userName)) {

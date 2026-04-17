@@ -21,7 +21,7 @@ const createMockToken = (): string => {
 };
 
 export const authHandlers = [
-  http.post('/api/auth/login', async ({ request }) => {
+  http.post('*/api/auth/login', async ({ request }) => {
     const body = (await request.json()) as { password: string; userName: string };
 
     if (body.userName === VALID_CREDENTIALS.userName && body.password === VALID_CREDENTIALS.password) {
