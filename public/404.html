@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirigiendo…</title>
+  </head>
+  <body>
+    <script>
+      (function redirectToSpa() {
+        const path = window.location.pathname;
+        const search = window.location.search;
+        const hash = window.location.hash;
+        const segments = path.split('/').filter(Boolean);
+        const repoBase = segments.length > 0 ? `/${segments[0]}` : '';
+        const target = `${repoBase}/?p=${encodeURIComponent(path)}&q=${encodeURIComponent(search)}&h=${encodeURIComponent(hash)}`;
+
+        window.location.replace(target);
+      })();
+    </script>
+  </body>
+</html>

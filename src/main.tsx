@@ -10,6 +10,21 @@ import { AppRouter } from '@/router/AppRouter';
 
 import './index.css';
 
+const restoreGithubPagesRoute = (): void => {
+  const currentUrl = new URL(window.location.href);
+  const redirectedPath = currentUrl.searchParams.get('p');
+
+  if (!redirectedPath) {
+    return;
+  }
+
+  const redirectedSearch = currentUrl.searchParams.get('q') ?? '';
+  const redirectedHash = currentUrl.searchParams.get('h') ?? '';
+  const nextUrl = `${decodeURIComponent(redirectedPath)}${decodeURIComponent(redirectedSearch)}${decodeURIComponent(redirectedHash)}`;
+
+  window.history.replaceState(null, '', nextUrl);
+};
+
 const enableMocking = async (): Promise<void> => {
   if (!import.meta.env.DEV) {
     return;
@@ -23,6 +38,8 @@ const enableMocking = async (): Promise<void> => {
 };
 
 const renderApp = (): void => {
+  restoreGithubPagesRoute();
+
   const rootElement = document.getElementById('root');
 
   if (!rootElement) {

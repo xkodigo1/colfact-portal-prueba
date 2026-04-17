@@ -37,7 +37,6 @@ jobs:
 
       - name: Prepare SPA fallback
         run: |
-          cp dist/index.html dist/404.html
           touch dist/.nojekyll
 
       - name: Configure Pages
