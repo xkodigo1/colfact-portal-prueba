@@ -12,7 +12,7 @@ export const UsersTable = ({ users }: UsersTableProps) => {
   return (
     <div className="overflow-hidden rounded-3xl border border-surface-200 bg-white shadow-panel">
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-surface-200 text-left text-sm">
+        <table className="min-w-[760px] w-full divide-y divide-surface-200 text-left text-sm">
           <thead className="bg-surface-50 text-surface-700">
             <tr>
               <th className="px-6 py-4 font-semibold">Usuario</th>
@@ -24,7 +24,7 @@ export const UsersTable = ({ users }: UsersTableProps) => {
           </thead>
           <tbody className="divide-y divide-surface-200">
             {users.map((user) => (
-              <tr className="transition hover:bg-primary-50/50" key={user.id}>
+              <tr className="transition hover:bg-surface-50" key={user.id}>
                 <td className="px-6 py-4">
                   <p className="font-semibold text-surface-900">{user.fullName}</p>
                   <p className="text-surface-700">{user.userName}</p>
@@ -38,9 +38,12 @@ export const UsersTable = ({ users }: UsersTableProps) => {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <Link
-                    className="inline-flex rounded-2xl px-4 py-2.5 text-sm font-semibold text-surface-700 transition hover:bg-surface-100 hover:text-surface-900"
+                    className="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-semibold text-surface-700 transition hover:bg-surface-100 hover:text-surface-900"
                     to={`/users/${user.id}`}
                   >
+                    <span aria-hidden="true" className="text-base leading-none">
+                      {'->'}
+                    </span>
                     Ver detalle
                   </Link>
                 </td>

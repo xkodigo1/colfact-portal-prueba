@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -45,6 +46,7 @@ export const UserCreateForm = () => {
       setSuccessMessage('');
       await createUser(values);
       setSuccessMessage('Usuario creado correctamente. La tabla ya fue actualizada.');
+      toast.success('Usuario creado correctamente');
       reset({
         fullName: '',
         userName: '',
@@ -54,13 +56,14 @@ export const UserCreateForm = () => {
         password: '',
         isActive: true,
       });
-    } catch {
+    } catch (error) {
       setSuccessMessage('');
+      toast.error(getApiErrorMessage(error, 'No fue posible crear el usuario.'));
     }
   };
 
   return (
-    <Card className="sticky top-6">
+    <Card className="xl:sticky xl:top-6">
       <div>
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent-600">Nuevo usuario</p>
         <h2 className="mt-3 text-2xl font-bold text-surface-900">Crear cuenta operativa</h2>
@@ -107,7 +110,7 @@ export const UserCreateForm = () => {
           </div>
         ) : null}
         {successMessage ? (
-          <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700 shadow-sm">
             {successMessage}
           </div>
         ) : null}

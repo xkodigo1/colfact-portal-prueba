@@ -73,7 +73,7 @@ export const UsersPage = () => {
         ) : null}
       </section>
 
-      <aside>
+      <aside className="order-last xl:order-none">
         <UserCreateForm />
       </aside>
     </div>

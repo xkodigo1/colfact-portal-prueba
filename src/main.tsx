@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter } from 'react-router-dom';
+import { Toaster } from 'sonner';
 
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import { queryClient } from '@/lib/queryClient';
@@ -54,6 +55,7 @@ const renderApp = (): void => {
             <AppRouter />
           </AuthProvider>
         </BrowserRouter>
+        <Toaster position="top-right" richColors />
         {import.meta.env.DEV ? <ReactQueryDevtools initialIsOpen={false} /> : null}
       </QueryClientProvider>
     </StrictMode>,

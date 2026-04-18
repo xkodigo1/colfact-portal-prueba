@@ -9,6 +9,18 @@ const highlights = [
   { label: 'Fuente de datos', value: 'MSW', detail: 'API simulada con contratos tipados y estados visibles.' },
 ] as const;
 
+const quickActions = [
+  { title: 'Revisar usuarios activos', detail: 'Verifica emisores y visualizadores habilitados.', to: '/users' },
+  { title: 'Crear nueva cuenta', detail: 'Usa el panel lateral para registrar un usuario operativo.', to: '/users' },
+  { title: 'Auditar accesos', detail: 'Confirma roles y permisos antes de la revisión técnica.', to: '/users' },
+] as const;
+
+const recentActivity = [
+  'Login administrativo disponible con sesión reactiva.',
+  'Módulo de usuarios con filtros y paginación listo para revisión.',
+  'Despliegue público activo en GitHub Pages para validación externa.',
+] as const;
+
 export const DashboardPage = () => {
   const { user } = useAuth();
 
@@ -37,6 +49,44 @@ export const DashboardPage = () => {
             <p className="mt-3 text-sm leading-6 text-surface-700">{item.detail}</p>
           </Card>
         ))}
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+        <Card>
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-600">Accesos rápidos</p>
+              <h2 className="mt-2 text-2xl font-bold text-surface-900">Siguientes acciones recomendadas</h2>
+            </div>
+          </div>
+          <div className="mt-6 grid gap-4 md:grid-cols-3 xl:grid-cols-1">
+            {quickActions.map((item) => (
+              <Link
+                className="rounded-3xl border border-surface-200 bg-surface-50 px-5 py-5 transition hover:border-primary-200 hover:bg-primary-50"
+                key={item.title}
+                to={item.to}
+              >
+                <p className="text-base font-semibold text-surface-900">{item.title}</p>
+                <p className="mt-2 text-sm leading-6 text-surface-700">{item.detail}</p>
+              </Link>
+            ))}
+          </div>
+        </Card>
+
+        <Card>
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-600">Actividad reciente</p>
+          <h2 className="mt-2 text-2xl font-bold text-surface-900">Estado del entorno</h2>
+          <div className="mt-6 space-y-4">
+            {recentActivity.map((item, index) => (
+              <div className="flex gap-4" key={item}>
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-100 text-sm font-bold text-primary-700">
+                  {index + 1}
+                </div>
+                <p className="pt-1 text-sm leading-6 text-surface-700">{item}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
       </section>
     </div>
   );
