@@ -5,10 +5,10 @@ interface UserRoleBadgeProps {
   role: UserRole;
 }
 
-const roleToneMap: Record<UserRole, 'primary' | 'warning' | 'neutral'> = {
+const roleToneMap: Record<UserRole, 'primary' | 'accent' | 'warning'> = {
   Admin: 'primary',
-  Issuer: 'warning',
-  IssuerViewer: 'neutral',
+  Issuer: 'accent',
+  IssuerViewer: 'warning',
 };
 
 export const UserRoleBadge = ({ role }: UserRoleBadgeProps) => {

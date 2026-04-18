@@ -14,7 +14,11 @@ const titleMap: Record<string, { description: string; title: string }> = {
   },
 };
 
-export const Header = () => {
+interface HeaderProps {
+  onMenuToggle: () => void;
+}
+
+export const Header = ({ onMenuToggle }: HeaderProps) => {
   const location = useLocation();
   const { logout, user } = useAuth();
   const current = titleMap[location.pathname] ?? {
@@ -25,9 +29,14 @@ export const Header = () => {
   return (
     <header className="rounded-[2rem] border border-white/70 bg-white/85 px-6 py-5 shadow-panel backdrop-blur">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
+        <div className="flex items-start justify-between gap-4">
+          <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-600">{current.title}</p>
           <p className="mt-2 text-sm text-surface-700">{current.description}</p>
+          </div>
+          <Button className="lg:hidden" onClick={onMenuToggle} variant="secondary">
+            Menú
+          </Button>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-right">

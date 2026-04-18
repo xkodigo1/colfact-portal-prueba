@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { cn } from '@/utils/cn';
@@ -9,11 +10,30 @@ const navigationItems = [
   { label: 'Usuarios', to: '/users' },
 ] as const;
 
-export const Sidebar = () => {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { user } = useAuth();
 
   return (
-    <aside className="flex w-full flex-col justify-between rounded-[2rem] bg-surface-900 p-6 text-white shadow-panel lg:min-h-[calc(100vh-3rem)] lg:w-72">
+    <>
+      <div
+        aria-hidden={!isOpen}
+        className={cn(
+          'fixed inset-0 z-30 bg-surface-900/50 backdrop-blur-sm transition lg:hidden',
+          isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
+        )}
+        onClick={onClose}
+      />
+      <aside
+        className={cn(
+          'fixed inset-y-4 left-4 z-40 flex w-[min(20rem,calc(100vw-2rem))] flex-col justify-between rounded-[2rem] bg-surface-900 p-6 text-white shadow-panel transition duration-200 lg:static lg:inset-auto lg:w-72 lg:min-h-[calc(100vh-3rem)] lg:translate-x-0',
+          isOpen ? 'translate-x-0' : '-translate-x-[120%] lg:translate-x-0',
+        )}
+      >
       <div>
         <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-accent-100">Colfact</p>
@@ -28,11 +48,12 @@ export const Sidebar = () => {
             <NavLink
               className={({ isActive }) =>
                 cn(
-                  'rounded-2xl px-4 py-3 text-sm font-semibold text-white/70 transition hover:bg-white/10 hover:text-white',
-                  isActive && 'bg-primary-600 text-white',
+                  'rounded-2xl px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/10 hover:text-white',
+                  isActive && 'bg-primary-600 font-semibold text-white',
                 )
               }
               key={item.to}
+              onClick={onClose}
               to={item.to}
             >
               {item.label}
@@ -49,7 +70,11 @@ export const Sidebar = () => {
             {user?.role ?? 'Invitado'}
           </Badge>
         </div>
+        <Button className="mt-5 w-full lg:hidden" onClick={onClose} variant="secondary">
+          Cerrar menú
+        </Button>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 };
