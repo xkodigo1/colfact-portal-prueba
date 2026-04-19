@@ -11,6 +11,10 @@ import { useCreateUser } from '@/features/users/hooks/useCreateUser';
 import { userSchema, type UserFormValues } from '@/features/users/schemas/userSchema';
 import { getApiErrorMessage } from '@/utils/auth';
 
+/**
+ * Formulario lateral de creacion. Mantiene feedback inline y toast para que
+ * el resultado de la accion quede evidente durante la evaluacion.
+ */
 export const UserCreateForm = () => {
   const { createUser, error, isPending, reset: resetMutation } = useCreateUser();
   const [successMessage, setSuccessMessage] = useState<string>('');
@@ -45,6 +49,9 @@ export const UserCreateForm = () => {
       resetMutation();
       setSuccessMessage('');
       await createUser(values);
+
+      // El formulario se resetea solo despues del exito real para no perder
+      // informacion si la operacion falla.
       setSuccessMessage('Usuario creado correctamente. La tabla ya fue actualizada.');
       toast.success('Usuario creado correctamente');
       reset({
@@ -56,9 +63,9 @@ export const UserCreateForm = () => {
         password: '',
         isActive: true,
       });
-    } catch (error) {
+    } catch (requestError) {
       setSuccessMessage('');
-      toast.error(getApiErrorMessage(error, 'No fue posible crear el usuario.'));
+      toast.error(getApiErrorMessage(requestError, 'No fue posible crear el usuario.'));
     }
   };
 
@@ -68,7 +75,7 @@ export const UserCreateForm = () => {
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent-600">Nuevo usuario</p>
         <h2 className="mt-3 text-2xl font-bold text-surface-900">Crear cuenta operativa</h2>
         <p className="mt-2 text-sm text-surface-700">
-          Registra administradores, emisores o visualizadores con validación inmediata.
+          Registra administradores, emisores o visualizadores con validacion inmediata.
         </p>
       </div>
 
@@ -78,10 +85,10 @@ export const UserCreateForm = () => {
         <Input
           error={errors.identification?.message}
           id="identification"
-          label="Identificación"
+          label="Identificacion"
           {...register('identification')}
         />
-        <Input error={errors.email?.message} id="email" label="Correo electrónico" {...register('email')} />
+        <Input error={errors.email?.message} id="email" label="Correo electronico" {...register('email')} />
         <Select error={errors.role?.message} id="role" label="Rol" {...register('role')}>
           <option value="Admin">Admin</option>
           <option value="Issuer">Issuer</option>
@@ -90,7 +97,7 @@ export const UserCreateForm = () => {
         <Input
           error={errors.password?.message}
           id="password"
-          label="Contraseña temporal"
+          label="Contrasena temporal"
           type="password"
           {...register('password')}
         />

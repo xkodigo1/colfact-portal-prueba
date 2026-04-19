@@ -9,6 +9,10 @@ import { UsersTable } from '@/features/users/components/UsersTable';
 import { useUsers } from '@/features/users/hooks/useUsers';
 import { getApiErrorMessage } from '@/utils/auth';
 
+/**
+ * Pagina contenedora del modulo de usuarios. Solo compone bloques visuales
+ * y estados de UI; la logica de datos vive en hooks especializados.
+ */
 export const UsersPage = () => {
   const {
     users,
@@ -58,13 +62,15 @@ export const UsersPage = () => {
             message={
               hasFilters
                 ? 'No se encontraron usuarios que coincidan con los filtros actuales.'
-                : 'Aún no hay usuarios disponibles en la lista simulada.'
+                : 'Aun no hay usuarios disponibles en la lista simulada.'
             }
             title="Sin resultados"
           />
         ) : null}
         {!isLoading && !isError && users.length > 0 ? (
           <>
+            {/* La tabla y la paginacion solo aparecen cuando ya hay datos
+                validos para dejar claros los estados loading/error/empty. */}
             <UsersTable users={users} />
             <div className="overflow-hidden rounded-3xl border border-surface-200 bg-white shadow-panel">
               <UsersPagination page={page} setPage={setPage} total={total} totalPages={totalPages} />

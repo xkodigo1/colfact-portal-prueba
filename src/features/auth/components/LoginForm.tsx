@@ -9,6 +9,10 @@ import { useAuth } from '@/features/auth/hooks/useAuth';
 import { loginSchema, type LoginFormValues } from '@/features/auth/schemas/loginSchema';
 import { getApiErrorMessage } from '@/utils/auth';
 
+/**
+ * Formulario de acceso del portal. La validacion local se resuelve con Zod
+ * y la autenticacion real se delega al contexto global.
+ */
 export const LoginForm = () => {
   const { login } = useAuth();
   const [submitError, setSubmitError] = useState<string>('');
@@ -29,7 +33,9 @@ export const LoginForm = () => {
       setSubmitError('');
       await login(values);
     } catch (error) {
-      setSubmitError(getApiErrorMessage(error, 'No fue posible iniciar sesión.'));
+      // El error se deja inline para que sea visible durante la demo sin
+      // obligar a revisar consola ni herramientas de red.
+      setSubmitError(getApiErrorMessage(error, 'No fue posible iniciar sesion.'));
     }
   };
 
@@ -39,7 +45,7 @@ export const LoginForm = () => {
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-600">Colfact Portal</p>
         <h1 className="mt-3 text-3xl font-bold tracking-tight text-surface-900">Acceso administrativo</h1>
         <p className="mt-3 text-sm text-surface-700">
-          Inicia sesión con tus credenciales para gestionar usuarios y operación electrónica.
+          Inicia sesion con tus credenciales para gestionar usuarios y operacion electronica.
         </p>
       </div>
 
@@ -56,8 +62,8 @@ export const LoginForm = () => {
           autoComplete="current-password"
           error={errors.password?.message}
           id="password"
-          label="Contraseña"
-          placeholder="••••••••"
+          label="Contrasena"
+          placeholder="********"
           type="password"
           {...register('password')}
         />
@@ -76,7 +82,7 @@ export const LoginForm = () => {
       <div className="mt-6 rounded-2xl bg-surface-50 p-4 text-sm text-surface-700">
         <p className="font-semibold text-surface-900">Credenciales de prueba</p>
         <p className="mt-1">Usuario: admin</p>
-        <p>Contraseña: Admin123!</p>
+        <p>Contrasena: Admin123!</p>
       </div>
     </Card>
   );

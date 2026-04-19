@@ -7,6 +7,10 @@ import { UserDetailPage } from '@/pages/UserDetailPage';
 import { UsersPage } from '@/pages/UsersPage';
 import { ProtectedRoute } from '@/router/ProtectedRoute';
 
+/**
+ * Router principal. La ruta publica vive fuera del arbol protegido y el
+ * layout administrativo solo se monta cuando existe sesion valida.
+ */
 export const AppRouter = () => {
   return (
     <Routes>

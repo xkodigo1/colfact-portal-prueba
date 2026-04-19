@@ -19,6 +19,10 @@ const decodeBase64Url = (value: string): string => {
   return atob(padded);
 };
 
+/**
+ * Los accesos al storage se concentran aqui para evitar claves duplicadas
+ * y para hacer explicita la politica de persistencia de la sesion.
+ */
 export const getAccessToken = (): string | null => {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
 };
@@ -37,10 +41,18 @@ export const clearAuthTokens = (): void => {
   localStorage.removeItem(REFRESH_TOKEN_KEY);
 };
 
+/**
+ * El interceptor HTTP no conoce React ni el contexto. Este evento actua como
+ * puente neutro para avisar que la sesion debe cerrarse en toda la app.
+ */
 export const notifyForcedLogout = (): void => {
   window.dispatchEvent(new Event(AUTH_FORCE_LOGOUT_EVENT));
 };
 
+/**
+ * Decodifica el payload del JWT para reconstruir el usuario autenticado sin
+ * pedir otra vez la sesion al backend mock.
+ */
 export const parseJwtPayload = (token: string): JwtPayload | null => {
   try {
     const [, payload] = token.split('.');
@@ -55,6 +67,10 @@ export const parseJwtPayload = (token: string): JwtPayload | null => {
   }
 };
 
+/**
+ * Si no hay expiracion legible, el token se trata como invalido.
+ * Esto evita falsos positivos de autenticacion.
+ */
 export const isTokenExpired = (token: string): boolean => {
   const payload = parseJwtPayload(token);
 
@@ -65,6 +81,9 @@ export const isTokenExpired = (token: string): boolean => {
   return payload.exp * 1000 <= Date.now();
 };
 
+/**
+ * Deriva el usuario a partir del JWT para mantener una sola fuente de verdad.
+ */
 export const buildAuthUserFromToken = (token: string): AuthUser | null => {
   const payload = parseJwtPayload(token);
 
@@ -80,6 +99,9 @@ export const buildAuthUserFromToken = (token: string): AuthUser | null => {
   };
 };
 
+/**
+ * Normaliza errores tecnicos a mensajes consistentes para mostrar en UI.
+ */
 export const getApiErrorMessage = (error: unknown, fallbackMessage: string): string => {
   if (axios.isAxiosError(error)) {
     const axiosError = error as AxiosError<ApiError>;

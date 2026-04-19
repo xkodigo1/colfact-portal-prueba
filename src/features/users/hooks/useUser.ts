@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchUser } from '@/api/users.api';
 
 /**
- * Hook para consultar el detalle de un usuario por identificador.
+ * Consulta el detalle solo cuando existe un id valido.
+ * retry:false evita repetir 404 innecesarios en una vista puntual.
  */
 export const useUser = (id: number | null) => {
   return useQuery({

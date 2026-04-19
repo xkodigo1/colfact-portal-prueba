@@ -8,6 +8,10 @@ interface UsersTableProps {
   users: User[];
 }
 
+/**
+ * Tabla presentacional del modulo. Recibe datos listos para pintar y deja
+ * fuera cualquier detalle de fetching, filtros o paginacion.
+ */
 export const UsersTable = ({ users }: UsersTableProps) => {
   return (
     <div className="overflow-hidden rounded-3xl border border-surface-200 bg-white shadow-panel">
@@ -16,10 +20,10 @@ export const UsersTable = ({ users }: UsersTableProps) => {
           <thead className="bg-surface-50 text-surface-700">
             <tr>
               <th className="px-6 py-4 font-semibold">Usuario</th>
-              <th className="px-6 py-4 font-semibold">Identificación</th>
+              <th className="px-6 py-4 font-semibold">Identificacion</th>
               <th className="px-6 py-4 font-semibold">Rol</th>
               <th className="px-6 py-4 font-semibold">Estado</th>
-              <th className="px-6 py-4 font-semibold text-right">Acción</th>
+              <th className="px-6 py-4 font-semibold text-right">Accion</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-surface-200">

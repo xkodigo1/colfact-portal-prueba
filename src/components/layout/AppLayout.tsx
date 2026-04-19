@@ -4,6 +4,10 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 
+/**
+ * Shell del area autenticada. Maneja el sidebar movil y deja el contenido
+ * variable a cargo del router mediante Outlet.
+ */
 export const AppLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 

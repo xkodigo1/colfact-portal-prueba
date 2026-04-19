@@ -18,12 +18,16 @@ interface HeaderProps {
   onMenuToggle: () => void;
 }
 
+/**
+ * Header contextual. Resume la vista actual y concentra acciones globales
+ * como el menu movil y el cierre de sesion.
+ */
 export const Header = ({ onMenuToggle }: HeaderProps) => {
   const location = useLocation();
   const { logout, user } = useAuth();
   const current = titleMap[location.pathname] ?? {
     title: 'Detalle de usuario',
-    description: 'Consulta información consolidada del usuario seleccionado.',
+    description: 'Consulta informacion consolidada del usuario seleccionado.',
   };
 
   return (
@@ -31,11 +35,11 @@ export const Header = ({ onMenuToggle }: HeaderProps) => {
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-start justify-between gap-4">
           <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-600">{current.title}</p>
-          <p className="mt-2 text-sm text-surface-700">{current.description}</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-600">{current.title}</p>
+            <p className="mt-2 text-sm text-surface-700">{current.description}</p>
           </div>
           <Button className="lg:hidden" onClick={onMenuToggle} variant="secondary">
-            Menú
+            Menu
           </Button>
         </div>
         <div className="flex items-center gap-4">
@@ -44,7 +48,7 @@ export const Header = ({ onMenuToggle }: HeaderProps) => {
             <p className="text-xs text-surface-700">{user?.role}</p>
           </div>
           <Button onClick={logout} variant="secondary">
-            Cerrar sesión
+            Cerrar sesion
           </Button>
         </div>
       </div>

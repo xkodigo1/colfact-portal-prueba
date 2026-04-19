@@ -25,6 +25,10 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Fallback por si el token no pudiera reconstruir completamente al usuario.
+ * En condiciones normales el JWT ya contiene lo necesario.
+ */
 const buildUserFromLogin = (response: LoginResponse): AuthUser | null => {
   const tokenUser = buildAuthUserFromToken(response.accessToken);
 
@@ -40,6 +44,10 @@ const buildUserFromLogin = (response: LoginResponse): AuthUser | null => {
   };
 };
 
+/**
+ * Hidrata la sesion al recargar la aplicacion. Si el token ya expiro, se
+ * limpia storage para evitar que el layout renderice datos obsoletos.
+ */
 const getInitialUser = (): AuthUser | null => {
   const token = getAccessToken();
 
@@ -51,11 +59,17 @@ const getInitialUser = (): AuthUser | null => {
   return buildAuthUserFromToken(token);
 };
 
+/**
+ * Provider global de autenticacion. Mantiene el estado reactivo de sesion,
+ * encapsula login/logout y escucha eventos externos como storage y 401.
+ */
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState<AuthUser | null>(() => getInitialUser());
 
+  // Reutilizamos la misma regla de navegacion para logout manual, expiracion
+  // y cierres de sesion forzados disparados por interceptores HTTP.
   const handleLogoutNavigation = useCallback((): void => {
     if (location.pathname !== '/login') {
       navigate('/login', { replace: true });
@@ -103,6 +117,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = useCallback(async (credentials: LoginRequest): Promise<void> => {
     const response = await loginRequest(credentials);
 
+    // Guardamos tokens antes de navegar para que ProtectedRoute, Header y
+    // Sidebar vean inmediatamente el estado autenticado correcto.
     setAuthTokens({
       accessToken: response.accessToken,
       refreshToken: response.refreshToken,
@@ -114,6 +130,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = useCallback((): void => {
     clearAuthTokens();
     setUser(null);
+
+    // El evento permite sincronizar listeners reactivos aunque el logout se
+    // origine fuera del contexto, por ejemplo desde un interceptor.
     notifyForcedLogout();
     handleLogoutNavigation();
   }, [handleLogoutNavigation]);

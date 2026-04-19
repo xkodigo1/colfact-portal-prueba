@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 
-import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { cn } from '@/utils/cn';
 
@@ -15,6 +15,10 @@ interface SidebarProps {
   onClose: () => void;
 }
 
+/**
+ * Navegacion lateral del portal. En desktop queda fija y en mobile funciona
+ * como drawer para no ocupar ancho permanente.
+ */
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { user } = useAuth();
 
@@ -34,46 +38,46 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           isOpen ? 'translate-x-0' : '-translate-x-[120%] lg:translate-x-0',
         )}
       >
-      <div>
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-accent-100">Colfact</p>
-          <h1 className="mt-3 text-2xl font-bold">Portal Administrativo</h1>
-          <p className="mt-3 text-sm leading-6 text-white/70">
-            Gestión de emisores, usuarios y operación documental certificada.
-          </p>
+        <div>
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-accent-100">Colfact</p>
+            <h1 className="mt-3 text-2xl font-bold">Portal Administrativo</h1>
+            <p className="mt-3 text-sm leading-6 text-white/70">
+              Gestion de emisores, usuarios y operacion documental certificada.
+            </p>
+          </div>
+
+          <nav className="mt-8 flex flex-col gap-2">
+            {navigationItems.map((item) => (
+              <NavLink
+                className={({ isActive }) =>
+                  cn(
+                    'rounded-2xl px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/10 hover:text-white',
+                    isActive && 'bg-primary-600 font-semibold text-white',
+                  )
+                }
+                key={item.to}
+                onClick={onClose}
+                to={item.to}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
         </div>
 
-        <nav className="mt-8 flex flex-col gap-2">
-          {navigationItems.map((item) => (
-            <NavLink
-              className={({ isActive }) =>
-                cn(
-                  'rounded-2xl px-4 py-3 text-sm font-medium text-white/70 transition hover:bg-white/10 hover:text-white',
-                  isActive && 'bg-primary-600 font-semibold text-white',
-                )
-              }
-              key={item.to}
-              onClick={onClose}
-              to={item.to}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-      </div>
-
-      <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-5">
-        <p className="text-sm font-medium text-white/65">Sesión activa</p>
-        <p className="mt-2 text-lg font-semibold">{user?.fullName ?? 'Sin sesión'}</p>
-        <div className="mt-3">
-          <Badge className="bg-white/10 text-white" tone="neutral">
-            {user?.role ?? 'Invitado'}
-          </Badge>
+        <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-5">
+          <p className="text-sm font-medium text-white/65">Sesion activa</p>
+          <p className="mt-2 text-lg font-semibold">{user?.fullName ?? 'Sin sesion'}</p>
+          <div className="mt-3">
+            <Badge className="bg-white/10 text-white" tone="neutral">
+              {user?.role ?? 'Invitado'}
+            </Badge>
+          </div>
+          <Button className="mt-5 w-full lg:hidden" onClick={onClose} variant="secondary">
+            Cerrar menu
+          </Button>
         </div>
-        <Button className="mt-5 w-full lg:hidden" onClick={onClose} variant="secondary">
-          Cerrar menú
-        </Button>
-      </div>
       </aside>
     </>
   );

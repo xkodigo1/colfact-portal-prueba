@@ -8,7 +8,8 @@ import type { UserListParams } from '@/types/user.types';
 const DEFAULT_PAGE_SIZE = 5;
 
 /**
- * Hook para obtener la lista paginada de usuarios con filtros y búsqueda.
+ * Orquesta el listado de usuarios: filtros locales, debounce de busqueda y
+ * consulta paginada contra la API mock.
  */
 export const useUsers = () => {
   const [search, setSearch] = useState<string>('');
@@ -17,6 +18,8 @@ export const useUsers = () => {
   const [page, setPage] = useState<number>(1);
   const debouncedSearch = useDebounce(search, 350);
 
+  // La key incluye filtros y pagina para que React Query administre caches
+  // separadas por cada combinacion visible en pantalla.
   const params: UserListParams = {
     page,
     pageSize: DEFAULT_PAGE_SIZE,
@@ -46,6 +49,8 @@ export const useUsers = () => {
     error: query.error,
     refetch: query.refetch,
     setSearch: (value: string) => {
+      // Si cambian los filtros, volvemos a la pagina 1 para evitar navegar
+      // a paginas que ya no existen con la nueva cantidad de resultados.
       setSearch(value);
       setPage(1);
     },

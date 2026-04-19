@@ -11,6 +11,11 @@ import { AppRouter } from '@/router/AppRouter';
 
 import './index.css';
 
+/**
+ * GitHub Pages no resuelve rutas SPA como /login o /users/1.
+ * El fallback 404 redirige a /?p=... y aqui restauramos la ruta real
+ * antes de montar React Router.
+ */
 const restoreGithubPagesRoute = (): void => {
   const currentUrl = new URL(window.location.href);
   const redirectedPath = currentUrl.searchParams.get('p');
@@ -26,6 +31,10 @@ const restoreGithubPagesRoute = (): void => {
   window.history.replaceState(null, '', nextUrl);
 };
 
+/**
+ * Los mocks se levantan solo en desarrollo. En build publica el mismo
+ * punto de entrada funciona, pero sin interceptar llamadas con MSW.
+ */
 const enableMocking = async (): Promise<void> => {
   if (!import.meta.env.DEV) {
     return;
@@ -38,6 +47,11 @@ const enableMocking = async (): Promise<void> => {
   });
 };
 
+/**
+ * Punto de montaje unico de la app. Aqui viven todos los providers globales:
+ * React Query para data fetching, Router para navegacion y AuthProvider para
+ * sincronizar la sesion en toda la UI.
+ */
 const renderApp = (): void => {
   restoreGithubPagesRoute();
 
