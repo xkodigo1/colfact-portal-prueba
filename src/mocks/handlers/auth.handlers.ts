@@ -1,8 +1,8 @@
 import { http, HttpResponse } from 'msw';
 
 const VALID_CREDENTIALS = {
-  userName: 'test_admin',
-  password: 'test2026',
+  userName: 'admin',
+  password: 'Admin123!',
 } as const;
 
 const createMockToken = (): string => {
@@ -11,8 +11,8 @@ const createMockToken = (): string => {
     JSON.stringify({
       sub: '3',
       role: 'Admin',
-      fullName: 'Test Administrator',
-      userName: 'test_admin',
+      fullName: 'Administrador',
+      userName: 'admin',
       exp: 9_999_999_999,
     }),
   );
@@ -29,7 +29,7 @@ export const authHandlers = [
         accessToken: createMockToken(),
         refreshToken: 'mock-refresh-token-abc123',
         role: 'Admin',
-        fullName: 'Test Administrator',
+        fullName: 'Administrador',
       });
     }
 

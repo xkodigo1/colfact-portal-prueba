@@ -9,10 +9,10 @@ interface UsersPaginationProps {
 
 export const UsersPagination = ({ page, setPage, total, totalPages }: UsersPaginationProps) => {
   return (
-    <div className="flex flex-col gap-3 border-t border-surface-200 px-6 py-4 text-sm text-surface-700 md:flex-row md:items-center md:justify-between">
+    <div className="flex flex-col gap-3 border-t border-surface-200 px-6 py-4 text-sm text-surface-700 dark:border-surface-700 dark:text-surface-100/80 md:flex-row md:items-center md:justify-between">
       <p>
-        Página <span className="font-semibold text-surface-900">{page}</span> de{' '}
-        <span className="font-semibold text-surface-900">{totalPages}</span> · {total} registros
+        Página <span className="font-semibold text-surface-900 dark:text-surface-100">{page}</span> de{' '}
+        <span className="font-semibold text-surface-900 dark:text-surface-100">{totalPages}</span> · {total} registros
       </p>
       <div className="flex gap-2">
         <Button disabled={page === 1} onClick={() => setPage(page - 1)} variant="secondary">

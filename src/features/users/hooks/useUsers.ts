@@ -47,8 +47,8 @@ export const useUsers = () => {
   const [page, setPage] = useState<number>(1);
   const debouncedSearch = useDebounce(search, 350);
 
-  // La key incluye filtros y pagina para que React Query administre caches
-  // separadas por cada combinacion visible en pantalla.
+  // La key incluye filtros y pagina para que cada combinacion tenga cache
+  // propia; asi React Query no mezcla resultados entre pantallas distintas.
   const params: UserListParams = {
     page,
     pageSize: DEFAULT_PAGE_SIZE,
@@ -78,8 +78,8 @@ export const useUsers = () => {
     error: query.error,
     refetch: query.refetch,
     setSearch: (value: string) => {
-      // Si cambian los filtros, volvemos a la pagina 1 para evitar navegar
-      // a paginas que ya no existen con la nueva cantidad de resultados.
+      // Al cambiar filtros reiniciamos la paginacion para no quedar en una
+      // pagina vacia o inexistente con menos resultados.
       setSearch(value);
       setPage(1);
     },
