@@ -12,6 +12,29 @@ import { AppRouter } from '@/router/AppRouter';
 import './index.css';
 
 /**
+ * ═════════════════════════════════════════════════════════════════════════
+ * ARQUITECTURA GLOBAL DE COLFACT PORTAL
+ *
+ * Flujo de inicializacion:
+ * 1. enableMocking() → MSW solo en desarrollo (isomorphic fetch interception)
+ * 2. renderApp() → Monta providers en orden correcto
+ * 3. AuthProvider → Hidrata sesion desde localStorage y sincroniza cambios
+ * 4. AppRouter → Protege rutas con ProtectedRoute
+ * 5. QueryClient → Maneja cache y sincronizacion de datos
+ *
+ * DECISION: ¿Por qué los providers estan anidados asi?
+ * → AuthProvider necesita estar dentro de QueryClientProvider porque el
+ *   contexto puede invalidar queries al logout. Pero también fuera de
+ *   BrowserRouter porque necesita acceso a navigate() en mount/unmount.
+ * → BrowserRouter envuelve AppRouter para que React Router funcione.
+ *
+ * DECISION: ¿Por qué MSW solo en dev?
+ * → En produccion, las API reales responden. En dev, MSW intercepta con
+ *   fetch de forma transparente (sin cambios de codigo).
+ * ═════════════════════════════════════════════════════════════════════════
+ */
+
+/**
  * GitHub Pages no resuelve rutas SPA como /login o /users/1.
  * El fallback 404 redirige a /?p=... y aqui restauramos la ruta real
  * antes de montar React Router.
