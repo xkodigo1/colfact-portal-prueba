@@ -10,8 +10,31 @@ import { loginSchema, type LoginFormValues } from '@/features/auth/schemas/login
 import { getApiErrorMessage } from '@/utils/auth';
 
 /**
- * Formulario de acceso del portal. La validacion local se resuelve con Zod
- * y la autenticacion real se delega al contexto global.
+ * ═════════════════════════════════════════════════════════════════════════
+ * Formulario de login
+ *
+ * RESPONSABILIDADES:
+ * 1. Renderizar campos usuario/contrasena con validacion Zod
+ * 2. Capturar submit y llamar a login() del contexto
+ * 3. Mostrar errores inline por campo (Zod) y error general (HTTP)
+ * 4. Mostrar estado loading en el boton
+ *
+ * DECISION: ¿Por qué react-hook-form + Zod en lugar de solo Zod?
+ * → react-hook-form maneja el estado del formulario (values, touched, dirty)
+ * → Zod valida schema (tipos + restricciones)
+ * → zodResolver integra ambos: react-hook-form usa Zod para validacion
+ * → El formulario no re-renderiza campo sin cambios (performance)
+ *
+ * DECISION: ¿Por qué setState para error en lugar de state del hook?
+ * → El error HTTP viene de login() del contexto.
+ * → React Hook Form solo maneja errores de validacion (Zod).
+ * → El error HTTP es de negocio (credenciales incorrectas), no de validacion.
+ * → Lo mantenemos en estado aparte para claridad.
+ *
+ * DECISION: ¿Por qué defaultValues con admin/Admin123?
+ * → Para que la demo sea mas rapida: no necesita escribir credenciales.
+ * → En produccion seria {}, pero para evaluacion es util.
+ * ═════════════════════════════════════════════════════════════════════════
  */
 export const LoginForm = () => {
   const { login } = useAuth();

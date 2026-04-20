@@ -47,6 +47,12 @@ const buildUserFromLogin = (response: LoginResponse): AuthUser | null => {
 /**
  * Hidrata la sesion al recargar la aplicacion. Si el token ya expiro, se
  * limpia storage para evitar que el layout renderice datos obsoletos.
+ *
+ * DECISION: ¿Por qué se valida expiracion aqui?
+ * → Si el usuario cierra navegador 3 horas y reabre, getAccessToken() trae
+ *   un token expirado. Sin esta validacion, el JWT se decodificaria con un
+ *   exp falso y el usuario veria su nombre pero no podria hacer API calls
+ *   (interceptor add Bearer token a 401).
  */
 const getInitialUser = (): AuthUser | null => {
   const token = getAccessToken();
@@ -60,8 +66,28 @@ const getInitialUser = (): AuthUser | null => {
 };
 
 /**
- * Provider global de autenticacion. Mantiene el estado reactivo de sesion,
- * encapsula login/logout y escucha eventos externos como storage y 401.
+ * ═════════════════════════════════════════════════════════════════════════
+ * Provider global de autenticacion
+ *
+ * RESPONSABILIDADES:
+ * 1. Hidrata sesion al recargar (getInitialUser)
+ * 2. Mantiene estado reactivo de usuario en toda la app
+ * 3. Encapsula login() (credenciales → JWT → navegacion)
+ * 4. Encapsula logout() (limpia storage + notifica + navega)
+ * 5. Escucha eventos externos: storage, interceptor 401, fuerza logout
+ * 6. Sincroniza cambios entre tabs (event listener storage)
+ *
+ * DECISION: ¿Por qué el contexto y no Redux/Zustand?
+ * → El estado de autenticacion es simple (user | null).
+ * → Context API con hooks es suficiente y mas lightweight.
+ * → Si en futuro hay 20+ campos de usuario, ya se puede migrar a Zustand.
+ *
+ * DECISION: ¿Por qué notifyForcedLogout()?
+ * → El interceptor de axios vive en lib/axios.ts (sin acceso a navigate).
+ * → Cuando responde 401, el interceptor dispara un evento custom.
+ * → El listener aqui recibe el evento y desencadena logout reactivo.
+ * → Esto desacopla la logica HTTP de la logica de sesion.
+ * ═════════════════════════════════════════════════════════════════════════
  */
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
