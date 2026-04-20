@@ -66,8 +66,8 @@ export const LoginForm = () => {
     <Card className="w-full max-w-md p-8">
       <div>
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-600">Colfact Portal</p>
-        <h1 className="mt-3 text-3xl font-bold tracking-tight text-surface-900">Acceso administrativo</h1>
-        <p className="mt-3 text-sm text-surface-700">
+        <h1 className="mt-3 text-3xl font-bold tracking-tight text-surface-900 dark:text-surface-100">Acceso administrativo</h1>
+        <p className="mt-3 text-sm text-surface-700 dark:text-surface-100/80">
           Inicia sesion con tus credenciales para gestionar usuarios y operacion electronica.
         </p>
       </div>
@@ -92,7 +92,7 @@ export const LoginForm = () => {
         />
 
         {submitError ? (
-          <div className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+          <div className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">
             {submitError}
           </div>
         ) : null}
@@ -102,8 +102,8 @@ export const LoginForm = () => {
         </Button>
       </form>
 
-      <div className="mt-6 rounded-2xl bg-surface-50 p-4 text-sm text-surface-700">
-        <p className="font-semibold text-surface-900">Credenciales de prueba</p>
+      <div className="mt-6 rounded-2xl bg-surface-50 p-4 text-sm text-surface-700 dark:bg-surface-700/40 dark:text-surface-100/80">
+        <p className="font-semibold text-surface-900 dark:text-surface-100">Credenciales de prueba</p>
         <p className="mt-1">Usuario: admin</p>
         <p>Contrasena: Admin123!</p>
       </div>

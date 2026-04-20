@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { login as loginRequest } from '@/api/auth.api';
 import { AuthContext } from '@/features/auth/context/auth-context';
@@ -150,12 +151,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       refreshToken: response.refreshToken,
     });
     setUser(buildUserFromLogin(response));
+    toast.success(`Bienvenido, ${response.fullName}`);
     navigate('/dashboard', { replace: true });
   }, [navigate]);
 
   const logout = useCallback((): void => {
     clearAuthTokens();
     setUser(null);
+    toast.info('Sesion cerrada correctamente.');
 
     // El evento permite sincronizar listeners reactivos aunque el logout se
     // origine fuera del contexto, por ejemplo desde un interceptor.
