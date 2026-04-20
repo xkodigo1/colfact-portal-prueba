@@ -55,8 +55,8 @@ La aplicación queda disponible en [http://localhost:5173](http://localhost:5173
 ## Credenciales de prueba
 
 ```txt
-Usuario: admin
-Contraseña: Admin123!
+Usuario: test_admin
+Contraseña: test2026
 ```
 
 ## Scripts
