@@ -78,7 +78,7 @@ VITE_API_BASE_URL=/api
 ## Decisiones técnicas
 
 ### Arquitectura por capas
-Se respetó la estructura definida en `AGENTS.md`: `types` → `api` → `mocks` → `hooks` → `schemas` → `components` → `pages` → `router`.  
+Se organizó el código por responsabilidades: `types` → `api` → `mocks` → `hooks` → `schemas` → `components` → `pages` → `router`.  
 Las páginas son delgadas y la lógica vive en hooks de feature o en funciones puras.
 
 ### Autenticación reactiva
@@ -93,7 +93,11 @@ El interceptor de response limpia tokens y emite un evento de logout forzado par
 Los endpoints se mockean solo en `development`, por lo que el código de producción sigue apuntando a `VITE_API_BASE_URL` sin cambios internos.
 
 ### UI y experiencia
-La interfaz mantiene un estilo administrativo limpio y responsivo, con navegación persistente, feedback inline y estados visibles en cada flujo.
+La interfaz mantiene un estilo administrativo limpio y responsivo, con navegación persistente y feedback visual en acciones y estados asíncronos:
+
+- Toasts de confirmación/error (login, logout y creación de usuario)
+- Loading con skeletons
+- Estados de error y estados vacíos (empty state)
 
 ## Mock API
 

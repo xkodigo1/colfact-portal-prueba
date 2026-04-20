@@ -11,6 +11,52 @@ import { AppRouter } from '@/router/AppRouter';
 
 import './index.css';
 
+const THEME_STORAGE_KEY = 'colfact:theme';
+type ThemeMode = 'dark' | 'light';
+
+const applyTheme = (theme: ThemeMode): void => {
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  document.documentElement.style.colorScheme = theme;
+};
+
+const resolveInitialTheme = (): ThemeMode => {
+  const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+
+  if (savedTheme === 'dark' || savedTheme === 'light') {
+    return savedTheme;
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
+/**
+ * ═════════════════════════════════════════════════════════════════════════
+ * ARQUITECTURA GLOBAL DE COLFACT PORTAL
+ *
+ * Flujo de inicializacion:
+ * 1. enableMocking() → MSW solo en desarrollo (isomorphic fetch interception)
+ * 2. renderApp() → Monta providers en orden correcto
+ * 3. AuthProvider → Hidrata sesion desde localStorage y sincroniza cambios
+ * 4. AppRouter → Protege rutas con ProtectedRoute
+ * 5. QueryClient → Maneja cache y sincronizacion de datos
+ *
+ * DECISION: ¿Por qué los providers estan anidados asi?
+ * → AuthProvider necesita estar dentro de QueryClientProvider porque el
+ *   contexto puede invalidar queries al logout. Pero también fuera de
+ *   BrowserRouter porque necesita acceso a navigate() en mount/unmount.
+ * → BrowserRouter envuelve AppRouter para que React Router funcione.
+ *
+ * DECISION: ¿Por qué MSW solo en dev?
+ * → En produccion, las API reales responden. En dev, MSW intercepta con
+ *   fetch de forma transparente (sin cambios de codigo).
+ * ═════════════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * GitHub Pages no resuelve rutas SPA como /login o /users/1.
+ * El fallback 404 redirige a /?p=... y aqui restauramos la ruta real
+ * antes de montar React Router.
+ */
 const restoreGithubPagesRoute = (): void => {
   const currentUrl = new URL(window.location.href);
   const redirectedPath = currentUrl.searchParams.get('p');
@@ -26,6 +72,10 @@ const restoreGithubPagesRoute = (): void => {
   window.history.replaceState(null, '', nextUrl);
 };
 
+/**
+ * Los mocks se levantan solo en desarrollo. En build publica el mismo
+ * punto de entrada funciona, pero sin interceptar llamadas con MSW.
+ */
 const enableMocking = async (): Promise<void> => {
   if (!import.meta.env.DEV) {
     return;
@@ -38,7 +88,13 @@ const enableMocking = async (): Promise<void> => {
   });
 };
 
+/**
+ * Punto de montaje unico de la app. Aqui viven todos los providers globales:
+ * React Query para data fetching, Router para navegacion y AuthProvider para
+ * sincronizar la sesion en toda la UI.
+ */
 const renderApp = (): void => {
+  applyTheme(resolveInitialTheme());
   restoreGithubPagesRoute();
 
   const rootElement = document.getElementById('root');

@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -23,8 +24,8 @@ export default {
           50: '#f7fafc',
           100: '#eef3f8',
           200: '#dde7f1',
-          700: '#35506b',
-          900: '#102033',
+          700: '#1d3550',
+          900: '#081625',
         },
         success: '#15803d',
         warning: '#ca8a04',
