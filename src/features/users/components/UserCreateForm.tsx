@@ -12,8 +12,46 @@ import { userSchema, type UserFormValues } from '@/features/users/schemas/userSc
 import { getApiErrorMessage } from '@/utils/auth';
 
 /**
- * Formulario lateral de creacion. Mantiene feedback inline y toast para que
- * el resultado de la accion quede evidente durante la evaluacion.
+ * ═════════════════════════════════════════════════════════════════════════
+ * Formulario de creacion de usuarios
+ *
+ * RESPONSABILIDADES:
+ * 1. Renderizar 7 campos con validacion Zod
+ * 2. Mantener estado del formulario con react-hook-form
+ * 3. Ejecutar mutacion POST /api/users
+ * 4. Mostrar estados: inline errors, loading, success, submit error
+ * 5. Refresco automatico de tabla via React Query
+ * 6. Toast de confirmacion visual
+ *
+ * CAMPOS VALIDADOS:
+ * - fullName: requerido, min 2 caracteres
+ * - userName: requerido, regex ^[a-z0-9._]+ (sin espacios)
+ * - identification: requerido, numero
+ * - email: requerido, formato email
+ * - role: enum ['Admin', 'Issuer', 'IssuerViewer']
+ * - password: requerido, min 8 caracteres (seguridad)
+ * - isActive: booleano (Activo/Inactivo)
+ *
+ * DECISION: ¿Por qué useWatch para isActive en lugar de register?
+ * → El Select necesita setValue() para cambiar valor desde onChange.
+ * → useWatch monitorea el cambio en tiempo real para rerender.
+ * → De otro modo, el Select no mostraria la seleccion del usuario.
+ *
+ * DECISION: ¿Por qué reset DESPUES de onSuccess?
+ * → Si hay error, el usuario NO pierde lo que escribio.
+ * → Solo limpiamos campos si la creacion fue exitosa.
+ * → Esto evita frustration de perder datos por un error temporal.
+ *\n * DECISION: ¿Por qué toast ADEMAS de successMessage inline?
+ * → Toast es temporal (desaparece en 3 segundos).
+ * → successMessage permanece hasta que el usuario hace otra accion.
+ * → Ambas senales aseguran que vea el feedback incluso si se distrae.
+ *\n * DECISION: ¿Por qué mostrar errores inline Y rechazar mutacion?
+ * → Zod valida antes de enviar (username regex, email format).
+ * → El backend puede rechazar (409: username existe, 400: email existe).
+ * → Zod errors son UX local (feedback al instante).
+ * → HTTP errors son backend logic (validaciones duplicate, restricciones).
+ * → Ambas se muestran para transparencia total.
+ * ═════════════════════════════════════════════════════════════════════════
  */
 export const UserCreateForm = () => {
   const { createUser, error, isPending, reset: resetMutation } = useCreateUser();

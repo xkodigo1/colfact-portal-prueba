@@ -4,8 +4,34 @@ import { MOCK_USERS } from '@/mocks/data/users.data';
 import type { UserRole } from '@/types/auth.types';
 import type { User } from '@/types/user.types';
 
-let users = [...MOCK_USERS];
-let nextId = users.length + 1;
+const MOCK_USERS_STORAGE_KEY = 'colfact:mock-users';
+
+const getInitialUsers = (): User[] => {
+  try {
+    const storedUsers = window.localStorage.getItem(MOCK_USERS_STORAGE_KEY);
+
+    if (!storedUsers) {
+      return [...MOCK_USERS];
+    }
+
+    const parsedUsers = JSON.parse(storedUsers) as User[];
+
+    if (!Array.isArray(parsedUsers)) {
+      return [...MOCK_USERS];
+    }
+
+    return parsedUsers;
+  } catch {
+    return [...MOCK_USERS];
+  }
+};
+
+const persistUsers = (nextUsers: User[]): void => {
+  window.localStorage.setItem(MOCK_USERS_STORAGE_KEY, JSON.stringify(nextUsers));
+};
+
+let users = getInitialUsers();
+let nextId = users.reduce((maxId, user) => Math.max(maxId, user.id), 0) + 1;
 
 export const usersHandlers = [
   http.get('*/api/users', ({ request }) => {
@@ -65,6 +91,7 @@ export const usersHandlers = [
     };
 
     users = [newUser, ...users];
+    persistUsers(users);
 
     return HttpResponse.json(newUser, { status: 201 });
   }),
