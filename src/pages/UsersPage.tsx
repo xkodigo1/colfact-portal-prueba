@@ -35,9 +35,9 @@ export const UsersPage = () => {
   const hasFilters = Boolean(search || role || typeof isActive === 'boolean');
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1.65fr)_420px]">
-      <section className="space-y-6">
-        <Card>
+    <div className="grid gap-4 xl:grid-cols-[minmax(0,1.65fr)_390px]">
+      <section className="space-y-4">
+        <Card className="p-5">
           <UsersFilters
             isActive={isActive}
             role={role}
@@ -68,18 +68,18 @@ export const UsersPage = () => {
           />
         ) : null}
         {!isLoading && !isError && users.length > 0 ? (
-          <>
+          <div className="space-y-3">
             {/* La tabla y la paginacion solo aparecen cuando ya hay datos
                 validos para dejar claros los estados loading/error/empty. */}
             <UsersTable users={users} />
-            <div className="overflow-hidden rounded-3xl border border-surface-200 bg-white shadow-panel">
+            <div className="overflow-hidden rounded-3xl border border-surface-200 bg-white shadow-panel dark:border-surface-700 dark:bg-surface-900/80">
               <UsersPagination page={page} setPage={setPage} total={total} totalPages={totalPages} />
             </div>
-          </>
+          </div>
         ) : null}
       </section>
 
-      <aside className="order-last xl:order-none">
+      <aside className="order-last min-h-0 xl:order-none">
         <UserCreateForm />
       </aside>
     </div>

@@ -9,12 +9,12 @@ interface EmptyStateProps {
 
 export const EmptyState = ({ actionLabel, message, onAction, title }: EmptyStateProps) => {
   return (
-    <div className="rounded-3xl border border-dashed border-surface-200 bg-white/80 p-8 text-center shadow-panel">
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-600">
+    <div className="rounded-3xl border border-dashed border-surface-200 bg-white/80 p-8 text-center shadow-panel dark:border-surface-700 dark:bg-surface-900/80">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-primary-600/20 dark:text-primary-200">
         0
       </div>
-      <h3 className="mt-4 text-lg font-semibold text-surface-900">{title}</h3>
-      <p className="mt-2 text-sm text-surface-700">{message}</p>
+      <h3 className="mt-4 text-lg font-semibold text-surface-900 dark:text-surface-100">{title}</h3>
+      <p className="mt-2 text-sm text-surface-700 dark:text-surface-100/80">{message}</p>
       {actionLabel && onAction ? (
         <Button className="mt-6" onClick={onAction} variant="secondary">
           {actionLabel}

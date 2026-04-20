@@ -11,6 +11,24 @@ import { AppRouter } from '@/router/AppRouter';
 
 import './index.css';
 
+const THEME_STORAGE_KEY = 'colfact:theme';
+type ThemeMode = 'dark' | 'light';
+
+const applyTheme = (theme: ThemeMode): void => {
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  document.documentElement.style.colorScheme = theme;
+};
+
+const resolveInitialTheme = (): ThemeMode => {
+  const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+
+  if (savedTheme === 'dark' || savedTheme === 'light') {
+    return savedTheme;
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
 /**
  * ═════════════════════════════════════════════════════════════════════════
  * ARQUITECTURA GLOBAL DE COLFACT PORTAL
@@ -76,6 +94,7 @@ const enableMocking = async (): Promise<void> => {
  * sincronizar la sesion en toda la UI.
  */
 const renderApp = (): void => {
+  applyTheme(resolveInitialTheme());
   restoreGithubPagesRoute();
 
   const rootElement = document.getElementById('root');

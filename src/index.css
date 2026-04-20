@@ -9,8 +9,12 @@
     color-scheme: light;
   }
 
+  .dark {
+    color-scheme: dark;
+  }
+
   * {
-    @apply border-surface-200;
+    @apply border-surface-200 dark:border-surface-700;
   }
 
   html {
@@ -18,7 +22,7 @@
   }
 
   body {
-    @apply min-h-screen bg-surface-50 bg-hero-grid bg-grid font-sans text-surface-900 antialiased;
+    @apply min-h-screen overflow-hidden bg-surface-50 bg-hero-grid bg-grid font-sans text-surface-900 antialiased dark:bg-surface-900 dark:text-surface-100;
   }
 
   a {

@@ -12,9 +12,9 @@ const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary:
     'bg-primary-600 text-white shadow-panel transition hover:bg-primary-700 focus-visible:outline-primary-500',
   secondary:
-    'bg-white text-surface-900 ring-1 ring-inset ring-surface-200 transition hover:bg-surface-100 focus-visible:outline-primary-500',
+    'bg-white text-surface-900 ring-1 ring-inset ring-surface-200 transition hover:bg-surface-100 focus-visible:outline-primary-500 dark:bg-surface-900 dark:text-surface-100 dark:ring-surface-700 dark:hover:bg-surface-700',
   ghost:
-    'bg-transparent text-surface-700 transition hover:bg-surface-100 focus-visible:outline-primary-500',
+    'bg-transparent text-surface-700 transition hover:bg-surface-100 focus-visible:outline-primary-500 dark:text-surface-100/80 dark:hover:bg-surface-700',
   danger: 'bg-danger text-white transition hover:opacity-90 focus-visible:outline-danger',
 };
 
